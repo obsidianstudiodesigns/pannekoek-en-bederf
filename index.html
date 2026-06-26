@@ -31,18 +31,17 @@
   }
   .hero .hero-bg{
     position:absolute;
-    top:50%;left:50%;
-    min-width:100%;min-height:100%;
-    width:auto;height:auto;
+    inset:0;
+    width:100%;height:100%;
     transform-origin:38% 42%;
-    transform:translate(-50%,-50%) scale(1);
+    transform:scale(1);
     object-fit:cover;
     z-index:1;
     animation:slowZoomIn 28s ease-in-out forwards;
   }
   @keyframes slowZoomIn{
-    0%{transform:translate(-50%,-50%) scale(1);}
-    100%{transform:translate(-50%,-50%) scale(1.35);}
+    0%{transform:scale(1);}
+    100%{transform:scale(1.35);}
   }
   .hero::after{
     content:"";
@@ -395,6 +394,30 @@
     nav img{height:46px;}
     .hero-logo{width:170px;}
   }
+
+  /* ---------- WHATSAPP FLOATING BUTTON ---------- */
+  .whatsapp-float{
+    display:none;
+    position:fixed;
+    bottom:22px;right:22px;
+    width:58px;height:58px;
+    background:#25D366;
+    border-radius:50%;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.35);
+    z-index:200;
+    text-decoration:none;
+    animation:pulseWA 2.4s infinite;
+  }
+  .whatsapp-float svg{width:30px;height:30px;fill:#fff;}
+  @keyframes pulseWA{
+    0%,100%{box-shadow:0 6px 18px rgba(0,0,0,0.35), 0 0 0 0 rgba(37,211,102,0.5);}
+    50%{box-shadow:0 6px 18px rgba(0,0,0,0.35), 0 0 0 12px rgba(37,211,102,0);}
+  }
+  @media(max-width:700px){
+    .whatsapp-float{display:flex;}
+  }
 </style>
 </head>
 <body>
@@ -526,6 +549,10 @@
     <p>Ons wil graag lekker pannekoeke vir jou volgende geleentheid flip!</p>
   </div>
 </section>
+
+<a href="https://wa.me/27729736620" target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp Daleen">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-1.746-.873-2.888-1.557-4.035-3.532-.305-.524.305-.487.873-1.62.099-.198.05-.371-.05-.52-.099-.149-.644-1.561-.886-2.137-.232-.557-.47-.482-.644-.49-.173-.005-.371-.005-.57-.005-.198 0-.52.075-.792.372-.272.298-1.04 1.018-1.04 2.48 0 1.462 1.065 2.875 1.213 3.074.149.198 2.045 3.13 4.96 4.26 2.917 1.131 2.917.755 3.864.681.947-.074 3.06-1.25 3.49-2.456.428-1.206.428-2.24.297-2.455-.13-.215-.297-.298-.594-.447zM12.01 2C6.484 2 2 6.477 2 11.99c0 2.193.715 4.222 1.93 5.873L2.5 21.5l3.733-1.398a9.97 9.97 0 0 0 5.777 1.84c5.527 0 10.01-4.477 10.01-9.99C22.02 6.477 17.537 2 12.01 2zm0 18.18a8.16 8.16 0 0 1-4.166-1.143l-.298-.176-2.95 1.104.99-2.875-.193-.296a8.16 8.16 0 0 1-1.265-4.354c0-4.522 3.683-8.198 8.21-8.198 4.527 0 8.21 3.676 8.21 8.198 0 4.523-3.683 8.198-8.21 8.198z"/></svg>
+</a>
 
 <footer>
   <img src="logo.png" alt="Pannekoek en Bederf">
