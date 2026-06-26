@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="af">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pannekoek en Bederf | Flipping Lekker!!!</title>
+<style>
+  :root{
+    --cream:#fdf3e3;
+    --brown:#3a1f0d;
+    --orange:#d8742a;
+    --green:#1f5c3f;
+    --red:#c1272d;
+    --gold:#e8b84b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Trebuchet MS','Segoe UI',sans-serif;
+    background:var(--cream);
+    color:var(--brown);
+    overflow-x:hidden;
+  }
+
+  /* ---------- HERO / IMAGE LANDING ---------- */
+  .hero{
+    position:relative;
+    height:100vh;
+    width:100%;
+    overflow:hidden;
+  }
+  .hero .hero-bg{
+    position:absolute;
+    top:50%;left:50%;
+    min-width:100%;min-height:100%;
+    width:auto;height:auto;
+    transform-origin:38% 42%;
+    transform:translate(-50%,-50%) scale(1);
+    object-fit:cover;
+    z-index:1;
+    animation:slowZoomIn 28s ease-in-out forwards;
+  }
+  @keyframes slowZoomIn{
+    0%{transform:translate(-50%,-50%) scale(1);}
+    100%{transform:translate(-50%,-50%) scale(1.35);}
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 40%, rgba(0,0,0,0.55) 100%);
+    z-index:2;
+  }
+  .hero-content{
+    position:relative;
+    z-index:3;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#fff;
+    padding:20px;
+  }
+  .hero-logo{
+    width:230px;
+    max-width:70vw;
+    filter:drop-shadow(0 8px 20px rgba(0,0,0,0.5));
+    animation:dropIn 1.2s cubic-bezier(.34,1.56,.64,1) both, float 4s ease-in-out 1.2s infinite;
+  }
+  @keyframes dropIn{
+    0%{transform:translateY(-200px) rotate(-15deg) scale(0.6); opacity:0;}
+    100%{transform:translateY(0) rotate(0) scale(1); opacity:1;}
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-12px);}
+  }
+  .hero-tagline{
+    font-family:'Comic Sans MS','Trebuchet MS',sans-serif;
+    font-size:clamp(1.8rem,5vw,3.2rem);
+    color:var(--gold);
+    text-shadow:3px 3px 0 var(--red), 0 0 30px rgba(0,0,0,0.6);
+    margin-top:25px;
+    opacity:0;
+    animation:fadeUp 1s ease 1.4s forwards;
+    letter-spacing:1px;
+  }
+  .hero-sub{
+    margin-top:10px;
+    font-size:clamp(1rem,2.5vw,1.4rem);
+    opacity:0;
+    animation:fadeUp 1s ease 1.8s forwards;
+  }
+  @keyframes fadeUp{
+    0%{opacity:0; transform:translateY(30px);}
+    100%{opacity:1; transform:translateY(0);}
+  }
+  .scroll-cue{
+    position:absolute;
+    bottom:30px;left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    color:#fff;
+    font-size:1.8rem;
+    animation:bounce 2s infinite;
+    cursor:pointer;
+  }
+  @keyframes bounce{
+    0%,100%{transform:translate(-50%,0);}
+    50%{transform:translate(-50%,12px);}
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:14px 30px;
+    background:rgba(58,31,13,0.0);
+    z-index:100;
+    transition:background 0.4s, padding 0.4s, box-shadow .4s;
+  }
+  nav.scrolled{
+    background:rgba(58,31,13,0.92);
+    box-shadow:0 4px 15px rgba(0,0,0,0.3);
+    padding:8px 30px;
+  }
+  nav img{height:80px; transition:height .4s;}
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:28px;
+  }
+  nav a{
+    color:#fdf3e3;
+    text-decoration:none;
+    font-weight:bold;
+    font-size:1rem;
+    position:relative;
+    padding-bottom:4px;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0%;height:2px;
+    background:var(--gold);
+    transition:width .3s;
+  }
+  nav a:hover::after{width:100%;}
+  .nav-toggle{display:none;}
+
+  /* ---------- SECTIONS ---------- */
+  section{
+    padding:90px 6%;
+    position:relative;
+  }
+  .section-title{
+    text-align:center;
+    font-size:clamp(2rem,4vw,2.8rem);
+    color:var(--green);
+    margin-bottom:12px;
+    opacity:0;
+    transform:translateY(30px);
+    transition:all .8s ease;
+  }
+  .section-title.visible{opacity:1;transform:translateY(0);}
+  .section-sub{
+    text-align:center;
+    color:var(--orange);
+    font-weight:bold;
+    margin-bottom:50px;
+    font-size:1.2rem;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about{
+    background:#fff;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:50px;
+  }
+  .about-img{
+    flex:1 1 380px;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    opacity:0;
+    transform:translateX(-60px) rotate(-3deg);
+    transition:all .9s ease;
+  }
+  .about-img.visible{opacity:1;transform:translateX(0) rotate(0);}
+  .about-img img{
+    width:100%;display:block;
+    transition:transform .6s ease;
+  }
+  .about-img:hover img{transform:scale(1.08) rotate(1deg);}
+  .about-text{
+    flex:1 1 380px;
+    opacity:0;
+    transform:translateX(60px);
+    transition:all .9s ease;
+  }
+  .about-text.visible{opacity:1;transform:translateX(0);}
+  .about-text h2{color:var(--brown); font-size:2rem; margin-bottom:18px;}
+  .about-text p{font-size:1.1rem; line-height:1.7; margin-bottom:16px;}
+  .pancake-divider{
+    display:inline-block;
+    font-size:1.5rem;
+    animation:spin 4s linear infinite;
+  }
+  @keyframes spin{ to{transform:rotate(360deg);} }
+
+  /* ---------- MENU ---------- */
+  .menu{
+    background:var(--cream);
+    text-align:center;
+  }
+  .menu-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:28px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .menu-card{
+    background:#fff;
+    border-radius:16px;
+    padding:30px 20px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+    opacity:0;
+    transform:translateY(50px) scale(.9);
+    transition:all .6s ease;
+    border:3px solid transparent;
+  }
+  .menu-card.visible{opacity:1;transform:translateY(0) scale(1);}
+  .menu-card:hover{
+    transform:translateY(-10px) scale(1.04) !important;
+    border-color:var(--gold);
+    box-shadow:0 18px 30px rgba(216,116,42,0.3);
+  }
+  .menu-card .emoji{
+    font-size:2.6rem;
+    display:block;
+    margin-bottom:14px;
+    animation:wiggle 3s ease-in-out infinite;
+  }
+  @keyframes wiggle{
+    0%,100%{transform:rotate(0);}
+    25%{transform:rotate(-8deg);}
+    75%{transform:rotate(8deg);}
+  }
+  .menu-card h3{color:var(--red); margin-bottom:10px; font-size:1.3rem;}
+  .menu-card p{color:#5a4332; font-size:.95rem;}
+  .menu-card .price{
+    display:inline-block;
+    margin-top:14px;
+    background:var(--green);
+    color:#fff;
+    padding:5px 16px;
+    border-radius:20px;
+    font-weight:bold;
+  }
+
+  /* ---------- GALLERY / GIANT FLIP ---------- */
+  .flip-banner{
+    background:var(--green);
+    color:#fff;
+    text-align:center;
+    padding:70px 20px;
+    position:relative;
+    overflow:hidden;
+  }
+  .flip-banner h2{
+    font-size:clamp(1.8rem,5vw,3rem);
+    color:var(--gold);
+    position:relative;
+    z-index:2;
+  }
+  .flip-banner p{
+    margin-top:14px;
+    font-size:1.2rem;
+    position:relative;
+    z-index:2;
+  }
+  .floating-pancake{
+    position:absolute;
+    font-size:3rem;
+    opacity:.25;
+    animation:drift linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translateY(110%) rotate(0deg);}
+    100%{transform:translateY(-150%) rotate(360deg);}
+  }
+
+  /* ---------- LOCATION / CONTACT ---------- */
+  .contact{
+    background:#fff;
+    display:flex;
+    flex-wrap:wrap;
+    gap:50px;
+    align-items:flex-start;
+    justify-content:center;
+  }
+  .contact-card{
+    flex:1 1 380px;
+    max-width:480px;
+    background:linear-gradient(160deg,#fff,#fdf0dc);
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+    opacity:0;
+    transform:translateY(50px);
+    transition:all .8s ease;
+  }
+  .contact-card.visible{opacity:1;transform:translateY(0);}
+  .contact-card h3{
+    color:var(--green);
+    font-size:1.5rem;
+    margin-bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .contact-card p{
+    font-size:1.1rem;
+    line-height:1.8;
+    margin-bottom:10px;
+  }
+  .contact-card a{
+    color:var(--orange);
+    font-weight:bold;
+    text-decoration:none;
+  }
+  .contact-card a:hover{text-decoration:underline;}
+  .badge{
+    display:inline-block;
+    background:var(--red);
+    color:#fff;
+    padding:4px 14px;
+    border-radius:20px;
+    font-size:.85rem;
+    margin-top:10px;
+    animation:pulse 2s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(193,39,45,0.5);}
+    50%{box-shadow:0 0 0 10px rgba(193,39,45,0);}
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--brown);
+    color:var(--cream);
+    text-align:center;
+    padding:35px 20px;
+  }
+  footer img{height:60px; margin-bottom:14px;}
+  footer p{opacity:.8; font-size:.9rem;}
+
+  @media(max-width:700px){
+    nav ul{
+      position:fixed;
+      top:0;right:-100%;
+      height:100vh;
+      width:70%;
+      background:rgba(58,31,13,0.97);
+      flex-direction:column;
+      justify-content:center;
+      gap:40px;
+      transition:right .4s ease;
+    }
+    nav ul.open{right:0;}
+    .nav-toggle{
+      display:block;
+      background:none;border:none;
+      color:#fff;font-size:1.8rem;
+      cursor:pointer;
+      z-index:101;
+    }
+    nav img{height:56px;}
+    section{padding:60px 6%;}
+    .about, .contact{gap:30px;}
+    .hero-sub{padding:0 10px;}
+    .menu-grid{gap:18px;}
+  }
+
+  @media(max-width:420px){
+    nav img{height:46px;}
+    .hero-logo{width:170px;}
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <img src="logo.png" alt="Pannekoek en Bederf logo">
+  <button class="nav-toggle" id="navToggle">&#9776;</button>
+  <ul id="navMenu">
+    <li><a href="#about">Oor Ons</a></li>
+    <li><a href="#menu">Spyskaart</a></li>
+    <li><a href="#tye">Ons Tye</a></li>
+    <li><a href="#contact">Kry Ons</a></li>
+  </ul>
+</nav>
+
+<!-- HERO IMAGE LANDING -->
+<section class="hero" id="home">
+  <img src="1fb58407-ba03-4672-9e7b-43c1bf653e51.jpg" alt="Pannekoek en Bederf trailer" class="hero-bg">
+  <div class="hero-content">
+    <div class="hero-tagline">FLIPPING LEKKER!!!</div>
+    <div class="hero-sub">Vars van die pan, reg uit ons kombuis 🥞</div>
+  </div>
+  <div class="scroll-cue" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">&#8595;</div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-img">
+    <img src="Container.jpg" alt="Pannekoek en Bederf container stalletjie">
+  </div>
+  <div class="about-text">
+    <h2>Welkom by Pannekoek en Bederf <span class="pancake-divider">🥞</span></h2>
+    <p>Pannekoek en Bederf bring jou goue, vars gerolde pannekoeke, voor jou oë gemaak. Soet, sout, ouderwetse Afrikaanse styl — elke bestelling is flipping lekker.</p>
+    <p>Kom maak jouself gemaklik by ons gesellige tafels en bankies by Plantland The Wilds, en laat ons jou bederf met 'n stapel warm pannekoeke.</p>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu" id="menu">
+  <h2 class="section-title">Ons Spyskaart</h2>
+  <p class="section-sub">Vars gerol, warm bedien</p>
+  <div class="menu-grid">
+    <div class="menu-card">
+      <span class="emoji">🍯</span>
+      <h3>Suiker &amp; Kaneel</h3>
+      <p>Die klassieke. Botter, suiker, kaneel, stewig gerol.</p>
+    </div>
+    <div class="menu-card">
+      <span class="emoji">🍫</span>
+      <h3>Sjokolade Neutspasta</h3>
+      <p>Heerlik vol gemaak met gladde sjokolade neutspasta.</p>
+    </div>
+    <div class="menu-card">
+      <span class="emoji">🍓</span>
+      <h3>Aardbei &amp; Room</h3>
+      <p>Vars aardbeie en geklopte room op 'n warm pannekoek.</p>
+    </div>
+    <div class="menu-card">
+      <span class="emoji">🧀</span>
+      <h3>Sout Kaas &amp; Maalvleis</h3>
+      <p>Gesmelte kaas en 'n ryke maalvleisvulsel — ware troos-kos.</p>
+    </div>
+    <div class="menu-card">
+      <span class="emoji">🍌</span>
+      <h3>Piesang &amp; Karamel</h3>
+      <p>Skywe piesang met 'n goue karamelsous.</p>
+    </div>
+    <div class="menu-card">
+      <span class="emoji">🥥</span>
+      <h3>Kondensmelk &amp; Klapper</h3>
+      <p>'n Suid-Afrikaanse gunsteling — stroperig, soet, met klapper bo-oor.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FLIP BANNER -->
+<div class="flip-banner">
+  <div class="floating-pancake" style="left:8%; animation-duration:9s;">🥞</div>
+  <div class="floating-pancake" style="left:25%; animation-duration:13s; animation-delay:2s;">🥞</div>
+  <div class="floating-pancake" style="left:50%; animation-duration:10s; animation-delay:1s;">🥞</div>
+  <div class="floating-pancake" style="left:70%; animation-duration:14s; animation-delay:3s;">🥞</div>
+  <div class="floating-pancake" style="left:88%; animation-duration:11s;">🥞</div>
+  <h2>Kom word bederf. Kom word verbederf.</h2>
+  <p>Stap na ons stalletjie, kyk hoe ons flip, smaak die lekker.</p>
+</div>
+
+<!-- TYE / HOURS -->
+<section class="menu" id="tye">
+  <h2 class="section-title">Ons Tye</h2>
+  <p class="section-sub">Wanneer ons oop is</p>
+  <div class="menu-grid" style="max-width:700px;">
+    <div class="menu-card">
+      <span class="emoji">🥞</span>
+      <h3>Dinsdag tot Vrydag</h3>
+      <p>08h00 tot 17h00</p>
+    </div>
+    <div class="menu-card">
+      <span class="emoji">🥞</span>
+      <h3>Saterdag</h3>
+      <p>08h00 tot 14h30</p>
+    </div>
+    <div class="menu-card">
+      <span class="emoji">🥞</span>
+      <h3>Sondag</h3>
+      <p>08h30 tot 14h00</p>
+    </div>
+    <div class="menu-card" style="background:var(--red); border:3px solid var(--gold);">
+      <span class="emoji">🚫</span>
+      <h3 style="color:#fff;">Maandae</h3>
+      <p style="color:#fff; font-weight:bold;">MAANDAE IS ONS TOE</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-card">
+    <h3>📍 Kry Ons Container</h3>
+    <p><strong>Pannekoek en Bederf</strong></p>
+    <p>Plantland The Wilds,<br>
+    Hoek van Atterbury Rd en Olympus Dr,<br>
+    Olympus</p>
+    <span class="badge">Sien Ons Tye Hierbo</span>
+  </div>
+  <div class="contact-card">
+    <h3>📞 Skakel Ons</h3>
+    <p>Skakel of WhatsApp Daleen vir bestellings of vrae:</p>
+    <p><a href="tel:0729736620">072 973 6620</a></p>
+    <p>Ons wil graag lekker pannekoeke vir jou volgende geleentheid flip!</p>
+  </div>
+</section>
+
+<footer>
+  <img src="logo.png" alt="Pannekoek en Bederf">
+  <p>&copy; 2026 Pannekoek en Bederf — Flipping Lekker!!!</p>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', ()=>{
+    navbar.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  const navToggle = document.getElementById('navToggle');
+  const navMenu = document.getElementById('navMenu');
+  navToggle.addEventListener('click', ()=> navMenu.classList.toggle('open'));
+  navMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>navMenu.classList.remove('open')));
+
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {threshold:0.15});
+
+  document.querySelectorAll('.section-title, .about-img, .about-text, .menu-card, .contact-card')
+    .forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>
